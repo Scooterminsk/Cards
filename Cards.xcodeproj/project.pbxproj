@@ -17,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		E41ACEF828996FBE00D08A31 /* BezierExperiments.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BezierExperiments.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		E43B12BE289C1B6C00A6BD02 /* ShapeExamples.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ShapeExamples.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E494C2D22891380400E02903 /* Cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E494C2D52891380400E02903 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E494C2D72891380400E02903 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +68,7 @@
 				E494C2E32891380400E02903 /* Info.plist */,
 				E494C2E92891385600E02903 /* ViewExperiments.playground */,
 				E41ACEF828996FBE00D08A31 /* BezierExperiments.playground */,
+				E43B12BE289C1B6C00A6BD02 /* ShapeExamples.playground */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
