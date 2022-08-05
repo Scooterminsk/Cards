@@ -19,6 +19,15 @@ extension ShapeLayerProtocol {
     }
 }
 
+extension UIResponder {
+    func responderChain() -> String {
+        guard let next = next else {
+            return String(describing: Self.self)
+        }
+        return "\(String(describing: Self.self)) -> \(next)"
+    }
+}
+
 class CircleShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
@@ -179,7 +188,17 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         }
     }
     var flipCompletionHandler: ((FlippableView) -> Void)?
-    func flip() {}
+    func flip() {
+        // determine between which views to transition
+        let fromView = isFlipped ? frontSideView : backSideView
+        let toView = isFlipped ? backSideView : frontSideView
+        // starting animated transition
+        UIView.transition(from: fromView, to: toView, duration: 0.5, options: [.transitionFlipFromTop], completion: { _ in
+            // rotation handler
+            self.flipCompletionHandler?(self)
+        })
+        isFlipped = !isFlipped
+    }
     
     // shape color
     var color: UIColor!
@@ -242,6 +261,11 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         let shapeLayer = ShapeType(size: shapeView.frame.size, fillColor: color.cgColor)
         shapeView.layer.addSublayer(shapeLayer)
         
+        // round the corners of the root layer
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = CGFloat(cornerRadius)
+        
+        
         return view
     }
     
@@ -262,8 +286,62 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         default:
             break
         }
+        
+        // round the corners of the root layer
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = CGFloat(cornerRadius)
+        
         return view
     }
+    
+    /*
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(self.responderChain())
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("touchesMoved Card")
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("touchesEnded Card")
+    }
+    */
+    
+    // anchor point
+    private var anchorPoint: CGPoint = CGPoint(x: 0, y: 0)
+    
+    private var startTouchPoint: CGPoint!
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // anchor point coordinates changing
+        anchorPoint.x = touches.first!.location(in: window).x - frame.minX
+        anchorPoint.y = touches.first!.location(in: window).y - frame.minY
+        
+        // original coordinates saving
+        startTouchPoint = frame.origin
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.frame.origin.x = touches.first!.location(in: window).x - anchorPoint.x
+        self.frame.origin.y = touches.first!.location(in: window).y - anchorPoint.y
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        /*
+        // animatedly return the card to its original position
+        UIView.animate(withDuration: 0.5, delay: 0) {
+            self.frame.origin = self.startTouchPoint
+            
+            // flip the view
+            if self.transform.isIdentity {
+                self.transform = CGAffineTransform(rotationAngle: .pi)
+            } else {
+                self.transform = .identity
+            }
+        }
+         */
+        if self.frame.origin == startTouchPoint {
+            flip()
+        }
+    }
+
 }
 
 class MyViewController : UIViewController {
@@ -288,10 +366,16 @@ class MyViewController : UIViewController {
         // face down playing card
         let firstCardView = CardView<CircleShape>(frame: CGRect(x: 0, y: 0, width: 120, height: 150), color: .red)
         self.view.addSubview(firstCardView)
+        firstCardView.flipCompletionHandler = { card in
+            card.superview?.bringSubviewToFront(card)
+        }
         
         // face up playing card
         let secondCardView = CardView<CircleShape>(frame: CGRect(x: 200, y: 0, width: 120, height: 150), color: .red)
         self.view.addSubview(secondCardView)
+        secondCardView.flipCompletionHandler = { card in
+            card.superview?.bringSubviewToFront(card)
+        }
         secondCardView.isFlipped = true
     }
 }
