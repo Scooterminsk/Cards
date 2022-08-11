@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E41064B328A542E400BCDBD6 /* CardViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41064B228A542E400BCDBD6 /* CardViewFactory.swift */; };
 		E494C2D62891380400E02903 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E494C2D52891380400E02903 /* AppDelegate.swift */; };
 		E494C2D82891380400E02903 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E494C2D72891380400E02903 /* SceneDelegate.swift */; };
 		E494C2DD2891380400E02903 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E494C2DB2891380400E02903 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E41064B228A542E400BCDBD6 /* CardViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewFactory.swift; sourceTree = "<group>"; };
 		E494C2D22891380400E02903 /* Cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E494C2D52891380400E02903 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E494C2D72891380400E02903 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E41064B128A542D100BCDBD6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E41064B228A542E400BCDBD6 /* CardViewFactory.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		E494C2C92891380300E02903 = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +74,7 @@
 		E494C2D42891380400E02903 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				E41064B128A542D100BCDBD6 /* Helpers */,
 				E4F7A21C28A4056100CC0D7B /* Model */,
 				E4F7A21928A4050300CC0D7B /* Controller */,
 				E4F7A21328A4039B00CC0D7B /* View */,
@@ -187,6 +198,7 @@
 				E4F7A22028A4085E00CC0D7B /* Game.swift in Sources */,
 				E4F7A21728A403BF00CC0D7B /* Cards.swift in Sources */,
 				E494C2D62891380400E02903 /* AppDelegate.swift in Sources */,
+				E41064B328A542E400BCDBD6 /* CardViewFactory.swift in Sources */,
 				E494C2D82891380400E02903 /* SceneDelegate.swift in Sources */,
 				E4F7A21528A403B600CC0D7B /* Shapes.swift in Sources */,
 			);
