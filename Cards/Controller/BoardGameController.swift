@@ -17,6 +17,9 @@ class BoardGameController: UIViewController {
     // button for loading and overloading the game
     lazy var startButtonView = getStartButtonView()
     
+    // button for fliping all cards
+    lazy var cardsFlipingView = getAllCardsFlipButton()
+    
     // board game
     lazy var boardGameView = getBoardGameView()
 
@@ -40,8 +43,10 @@ class BoardGameController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        // add the button on the scene
+        // add the start button on the scene
         view.addSubview(startButtonView)
+        // add the flip button on the scene
+        view.addSubview(cardsFlipingView)
         // add playing field on the scene
         view.addSubview(boardGameView)
     }
@@ -59,9 +64,9 @@ class BoardGameController: UIViewController {
     
     private func getStartButtonView() -> UIButton {
         // button creation
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 130, height: 50))
         // button location changing
-        button.center.x = view.center.x
+        button.center.x = view.frame.minX + 76
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -96,6 +101,60 @@ class BoardGameController: UIViewController {
         placeCardsOnBoard(cards)
     }
     
+    private func getAllCardsFlipButton() -> UIButton {
+        // button creation
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 180, height: 50))
+        // button location changing
+        button.center.x = view.frame.maxX - 100
+        
+        // getting access to the current window
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        // define the padding from the top of the window borders to the Safe Area
+        let topPadding = window!.safeAreaInsets.top
+        // setting an Y coordinate according to the padding
+        button.frame.origin.y = topPadding
+        
+        // button appearence setting
+        // text setting
+        button.setTitle("Перевернуть карты", for: .normal)
+        // text color setting for normal (not clicked) condition
+        button.setTitleColor(.black, for: .normal)
+        // text color setting for clicked condition
+        button.setTitleColor(.gray, for: .highlighted)
+        // background color setting
+        button.backgroundColor = .systemGray4
+        // corners rounding
+        button.layer.cornerRadius = 10
+        
+        // attaching a button click handler
+        button.addTarget(nil, action: #selector(flipAllCards(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc func flipAllCards(_ sender: UIButton) {
+        
+        if cardViews.allSatisfy({ ($0 as! FlippableView).isFlipped }) {
+            for card in cardViews {
+                (card as! FlippableView).flip()
+            }
+            flipComplitionHandlerAdd(cards: &cardViews)
+            return
+        }
+        
+        for card in cardViews {
+            if (card as! FlippableView).isFlipped {
+                continue
+            } else {
+                (card as! FlippableView).flip()
+                (card as! FlippableView).flipCompletionHandler = nil
+            }
+        }
+        
+         
+    }
     private func getBoardGameView() -> UIView {
         // game field padding from the nearest elements
         let margin: CGFloat = 10
@@ -144,8 +203,13 @@ class BoardGameController: UIViewController {
             cardTwo.tag = index
             cardsViews.append(cardTwo)
         }
-        // add flip handler to all the cards
-        for card in cardsViews {
+        flipComplitionHandlerAdd(cards: &cardsViews)
+        return cardsViews
+    }
+    
+    // add flip handler to all the cards
+    private func flipComplitionHandlerAdd(cards: inout [UIView]) {
+        for card in cards {
             (card as! FlippableView).flipCompletionHandler = { [self] flippedCard in
                 // transfer the card to the top of the hierarchy
                 flippedCard.superview?.bringSubviewToFront(flippedCard)
@@ -186,9 +250,7 @@ class BoardGameController: UIViewController {
                 }
             }
         }
-        return cardsViews
     }
-    
     private func placeCardsOnBoard(_ cards: [UIView]) {
         // deleting all cards from the playing field
         for card in cardViews {
