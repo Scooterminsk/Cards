@@ -46,10 +46,8 @@ class CircleShape: CAShapeLayer, ShapeLayerProtocol {
 class SquareShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
-        
         // a side is equal to the smallest side
         let edgeSize = ([size.width, size.height].min() ?? 0)
-        
         // square drawing
         let rect = CGRect(x: 0, y: 0, width: edgeSize, height: edgeSize)
         let path = UIBezierPath(rect: rect)

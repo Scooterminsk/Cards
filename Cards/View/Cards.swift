@@ -93,8 +93,10 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         
         // layer with a shape creation
         let shapeLayer = ShapeType(size: shapeView.frame.size, fillColor: color.cgColor)
+        if shapeLayer.fillColor == UIColor.white.cgColor {
+            shapeLayer.strokeColor = UIColor.black.cgColor
+        }
         shapeView.layer.addSublayer(shapeLayer)
-        
         // round the corners of the root layer
         view.layer.masksToBounds = true
         view.layer.cornerRadius = CGFloat(cornerRadius)
@@ -158,7 +160,10 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         self.frame.origin.y = touches.first!.location(in: window).y - anchorPoint.y
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.frame.origin.x > ((window?.frame.width)! - 80) || self.frame.origin.y > ((window?.frame.width)! - 120) || self.frame.origin.x < (window?.frame.minX)! || self.frame.origin.y < (window?.frame.minY)! {
+        if self.frame.origin == startTouchPoint {
+            flip()
+        }
+        if self.frame.maxX > ((window?.frame.maxX)! - 20) || self.frame.maxY > ((window?.frame.maxY)! - 150) || self.frame.origin.x < (window?.frame.minX)! || self.frame.origin.y < (window?.frame.minY)! {
             // animatedly return the card to its original position
             UIView.animate(withDuration: 0.5, delay: 0) {
                 self.frame.origin = self.startTouchPoint
@@ -172,9 +177,6 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
                  */
             }
             return
-        }
-        if self.frame.origin == startTouchPoint {
-            flip()
         }
     }
 

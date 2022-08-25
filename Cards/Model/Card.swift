@@ -11,6 +11,7 @@ import UIKit
 // card type
 enum CardType: CaseIterable {
     case circle
+    case unfilledCircle
     case cross
     case square
     case fill

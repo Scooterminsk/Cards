@@ -14,17 +14,26 @@ class CardViewFactory {
         let frame = CGRect(origin: .zero, size: size)
         // setting UIColor according to color in the model
         let viewColor = getViewColorBy(modelColor: color)
+        // created new var to make some changes with shapes before their returning
+        var resultingShape: UIView
         
         // generating and returning a card
         switch shape {
         case .circle:
-            return CardView<CircleShape>(frame: frame, color: viewColor)
+            resultingShape = CardView<CircleShape>(frame: frame, color: viewColor)
+            return resultingShape
+        case .unfilledCircle:
+            resultingShape = CardView<CircleShape>(frame: frame, color: .white)
+            return resultingShape
         case .cross:
-            return CardView<CrossShape>(frame: frame, color: viewColor)
+            resultingShape = CardView<CrossShape>(frame: frame, color: viewColor)
+            return resultingShape
         case .square:
-            return CardView<SquareShape>(frame: frame, color: viewColor)
+            resultingShape = CardView<SquareShape>(frame: frame, color: viewColor)
+            return resultingShape
         case .fill:
-            return CardView<FillShape>(frame: frame, color: viewColor)
+            resultingShape = CardView<FillShape>(frame: frame, color: viewColor)
+            return resultingShape
         }
     }
     
