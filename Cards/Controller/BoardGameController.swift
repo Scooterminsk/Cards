@@ -20,6 +20,9 @@ class BoardGameController: UIViewController {
     // button for fliping all cards
     lazy var cardsFlipingView = getAllCardsFlipButton()
     
+    // button that is used to go back to the launch screen
+    lazy var backButton = getDismissButton()
+    
     // board game
     lazy var boardGameView = getBoardGameView()
 
@@ -47,12 +50,15 @@ class BoardGameController: UIViewController {
         view.addSubview(startButtonView)
         // add the flip button on the scene
         view.addSubview(cardsFlipingView)
+        // add the back button on the scene
+        view.addSubview(backButton)
         // add playing field on the scene
         view.addSubview(boardGameView)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
     }
     
     private func getNewGame() -> Game {
@@ -64,9 +70,9 @@ class BoardGameController: UIViewController {
     
     private func getStartButtonView() -> UIButton {
         // button creation
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 130, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
         // button location changing
-        button.center.x = view.frame.minX + 76
+        button.center.x = view.frame.minX + 70
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -103,9 +109,9 @@ class BoardGameController: UIViewController {
     
     private func getAllCardsFlipButton() -> UIButton {
         // button creation
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 180, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 175, height: 50))
         // button location changing
-        button.center.x = view.frame.maxX - 100
+        button.center.x = view.frame.maxX - 95
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -152,9 +158,45 @@ class BoardGameController: UIViewController {
                 (card as! FlippableView).flipCompletionHandler = nil
             }
         }
-        
-         
     }
+    
+    private func getDismissButton() -> UIButton {
+        // button creation
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+        // button location changing
+        button.center.x = view.center.x - 27
+        
+        // getting access to the current window
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        // define the padding from the top of the window borders to the Safe Area
+        let topPadding = window!.safeAreaInsets.top
+        // setting an Y coordinate according to the padding
+        button.frame.origin.y = topPadding
+        
+        // button appearence setting
+        // text setting
+        button.setTitle("Назад", for: .normal)
+        // text color setting for normal (not clicked) condition
+        button.setTitleColor(.black, for: .normal)
+        // text color setting for clicked condition
+        button.setTitleColor(.gray, for: .highlighted)
+        // background color setting
+        button.backgroundColor = .systemGray4
+        // corners rounding
+        button.layer.cornerRadius = 10
+        
+        // attaching a button click handler
+        button.addTarget(nil, action: #selector(goBack(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc func goBack(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     private func getBoardGameView() -> UIView {
         // game field padding from the nearest elements
         let margin: CGFloat = 10
