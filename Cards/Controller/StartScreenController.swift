@@ -31,6 +31,7 @@ class StartScreenController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
     }
 
     
@@ -56,6 +57,7 @@ class StartScreenController: UIViewController {
     
     @objc func toTheGame(_ sender: UIButton) {
         self.navigationController?.pushViewController(boardGameController, animated: true)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     // MARK: - Creating a button to get to the edit screen
@@ -81,5 +83,6 @@ class StartScreenController: UIViewController {
     
     @objc func goToEditScreen(_ sender: UIButton) {
         self.navigationController?.pushViewController(editScreenController, animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 }

@@ -23,8 +23,17 @@ class BoardGameController: UIViewController {
     // button that is used to go back to the launch screen
     lazy var backButton = getDismissButton()
     
+    // button that is used to go to the settings screen
+    lazy var settingsButton = getSettingsButton()
+    
+    // button that is used to go back from the next screen and save data
+    lazy var goBackAndSaveButton = getBackBarButton()
+    
     // board game
     lazy var boardGameView = getBoardGameView()
+    
+    // edit screen controller entity
+    lazy var editScreenController = EditScreenController()
 
     // card sizes
     private var cardSize: CGSize {
@@ -52,6 +61,8 @@ class BoardGameController: UIViewController {
         view.addSubview(cardsFlipingView)
         // add the back button on the scene
         view.addSubview(backButton)
+        // add the settings button on the scene
+        view.addSubview(settingsButton)
         // add playing field on the scene
         view.addSubview(boardGameView)
     }
@@ -59,6 +70,12 @@ class BoardGameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.navigationItem.backBarButtonItem = goBackAndSaveButton
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     private func getNewGame() -> Game {
@@ -109,9 +126,9 @@ class BoardGameController: UIViewController {
     
     private func getAllCardsFlipButton() -> UIButton {
         // button creation
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 175, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
         // button location changing
-        button.center.x = view.frame.maxX - 95
+        button.center.x = view.center.x - 30
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -124,7 +141,7 @@ class BoardGameController: UIViewController {
         
         // button appearence setting
         // text setting
-        button.setTitle("Перевернуть карты", for: .normal)
+        button.setTitle("Флип!", for: .normal)
         // text color setting for normal (not clicked) condition
         button.setTitleColor(.black, for: .normal)
         // text color setting for clicked condition
@@ -162,9 +179,9 @@ class BoardGameController: UIViewController {
     
     private func getDismissButton() -> UIButton {
         // button creation
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 50))
         // button location changing
-        button.center.x = view.center.x - 27
+        button.center.x = view.center.x + 38
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -195,6 +212,55 @@ class BoardGameController: UIViewController {
     
     @objc func goBack(_ sender: UIButton) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    private func getSettingsButton() -> UIButton {
+        // button creation
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 111, height: 50))
+        // button location changing
+        button.center.x = view.frame.maxX - 65
+        
+        // getting access to the current window
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        // define the padding from the top of the window borders to the Safe Area
+        let topPadding = window!.safeAreaInsets.top
+        // setting an Y coordinate according to the padding
+        button.frame.origin.y = topPadding
+        
+        // button appearence setting
+        button.setTitle("Настройки", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.backgroundColor = .systemGray4
+        button.layer.cornerRadius = 10
+        
+        // attaching a button click handler
+        button.addTarget(nil, action: #selector(goToSettings(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc func goToSettings(_ sender: UIButton) {
+        self.navigationController?.pushViewController(editScreenController, animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    private func getBackBarButton() -> UIBarButtonItem {
+        // button creation
+        let button = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
+        
+        return button
+    }
+    
+    @objc func goBackAndSave(_ sender: UIBarButtonItem) {
+        
+        if let cardPairsUpdated = editScreenController.cardPairsUpdated {
+            cardsPairsCounts = cardPairsUpdated
+        }
+        navigationController?.popViewController(animated: true)
+        
     }
     
     private func getBoardGameView() -> UIView {
