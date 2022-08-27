@@ -26,6 +26,9 @@ class BoardGameController: UIViewController {
     // button that is used to go to the settings screen
     lazy var settingsButton = getSettingsButton()
     
+    // button that is used to go back from the next screen and save data
+    lazy var goBackAndSaveButton = getBackBarButton()
+    
     // board game
     lazy var boardGameView = getBoardGameView()
     
@@ -67,7 +70,7 @@ class BoardGameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = goBackAndSaveButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -242,6 +245,22 @@ class BoardGameController: UIViewController {
     @objc func goToSettings(_ sender: UIButton) {
         self.navigationController?.pushViewController(editScreenController, animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    private func getBackBarButton() -> UIBarButtonItem {
+        // button creation
+        let button = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
+        
+        return button
+    }
+    
+    @objc func goBackAndSave(_ sender: UIBarButtonItem) {
+        
+        if let cardPairsUpdated = editScreenController.cardPairsUpdated {
+            cardsPairsCounts = cardPairsUpdated
+        }
+        navigationController?.popViewController(animated: true)
+        
     }
     
     private func getBoardGameView() -> UIView {

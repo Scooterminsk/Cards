@@ -9,20 +9,27 @@ import UIKit
 
 class EditScreenController: UITableViewController {
 
-    // static cells creation
+    // cells creation without using storyboard
     var pairsCountCell = UITableViewCell()
     var cardTypeChoosingCell = UITableViewCell()
     var cardColoursChoosingCell = UITableViewCell()
     var backSideShapesChoosingCell = UITableViewCell()
+    
+    // settings view controllers entities
+    lazy var cardPairsController = CardPairsController()
+    lazy var cardTypesController = CardTypesController()
+    lazy var cardColoursController = CardColoursController()
+    lazy var backShapesController = BackShapesController()
+    
 
+    // updated data properties
+    var cardPairsUpdated: Int?
     
     override func loadView() {
         super.loadView()
         
         // set the title
         self.title = "Настройки игры"
-        
-        // construct pairs count cell, row 0
         
     }
     override func viewDidLoad() {
@@ -31,6 +38,9 @@ class EditScreenController: UITableViewController {
         
         // unabling scroll
         self.tableView.isScrollEnabled = false
+        
+        // back bar button item changing
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -85,45 +95,25 @@ class EditScreenController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            cardPairsController.completionHandler = { [unowned self] updatedValue in
+                cardPairsUpdated = updatedValue
+            }
+            self.navigationController?.pushViewController(cardPairsController, animated: true)
+        case 1:
+            self.navigationController?.pushViewController(cardTypesController, animated: true)
+        case 2:
+            self.navigationController?.pushViewController(cardColoursController, animated: true)
+        case 3:
+            self.navigationController?.pushViewController(backShapesController, animated: true)
+        default:
+            break
+        }
+        
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
         }
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
 }
