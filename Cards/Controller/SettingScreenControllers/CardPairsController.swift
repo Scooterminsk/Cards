@@ -15,9 +15,6 @@ class CardPairsController: UIViewController {
     // right navigation bar button entity
     lazy var rightNavigationBarButton = getRightNavigationBarButton()
     
-    // completion handler
-    var completionHandler: ((Int) -> Void)?
-    
     override func loadView() {
         super.loadView()
         
@@ -64,8 +61,9 @@ class CardPairsController: UIViewController {
     }
     
     @objc func savePairsCount(_ sender: UIBarButtonItem) {
-        let selectedNumber = pickerView.selectedRow(inComponent: 0)
-        completionHandler?(selectedNumber)
+        let selectedNumber = pickerView.selectedRow(inComponent: 0) + 1
+        let game = Game()
+        game.cardsCount = selectedNumber
         self.navigationController?.popViewController(animated: true)
     }
 

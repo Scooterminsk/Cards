@@ -9,11 +9,12 @@ import UIKit
 
 class BoardGameController: UIViewController {
 
-    // unique card pairs count
-    var cardsPairsCounts = 8
+    /*// unique card pairs count
+    var cardsPairsCounts = 8 */
+    
     // the 'Game' entity
-    lazy var game: Game = getNewGame()
-
+    var game = Game()
+    
     // button for loading and overloading the game
     lazy var startButtonView = getStartButtonView()
     
@@ -70,19 +71,13 @@ class BoardGameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.navigationItem.hidesBackButton = true
         self.navigationItem.backBarButtonItem = goBackAndSaveButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-    
-    private func getNewGame() -> Game {
-        let game = Game()
-        game.cardsCount = self.cardsPairsCounts
-        game.generateCards()
-        return game
     }
     
     private func getStartButtonView() -> UIButton {
@@ -119,7 +114,7 @@ class BoardGameController: UIViewController {
     }
     
     @objc func startGame(_ sender: UIButton) {
-        game = getNewGame()
+        game.generateCards()
         let cards = getCardsBy(modelData: game.cards)
         placeCardsOnBoard(cards)
     }
@@ -163,7 +158,47 @@ class BoardGameController: UIViewController {
             for card in cardViews {
                 (card as! FlippableView).flip()
             }
-            flipComplitionHandlerAdd(cards: &cardViews)
+            for card in cardViews{
+                (card as! FlippableView).flipCompletionHandler = { [unowned self] flippedCard in
+                    // transfer the card to the top of the hierarchy
+                    flippedCard.superview?.bringSubviewToFront(flippedCard)
+                    
+                    // add or delete a card
+                    if flippedCard.isFlipped {
+                        self.flippedCards.append(flippedCard)
+                    } else {
+                        if let cardIndex = self.flippedCards.firstIndex(of: flippedCard) {
+                            self.flippedCards.remove(at: cardIndex)
+                        }
+                    }
+                    
+                    // if 2 cards are flipped
+                    if self.flippedCards.count == 2 {
+                        // getting cards from model data
+                        let firstCard = game.cards[self.flippedCards.first!.tag]
+                        let secondCard = game.cards[self.flippedCards.last!.tag]
+                        
+                        // if the cards are similar
+                        if game.checkCards(firstCard, secondCard) {
+                            // first hide them anonymous
+                            UIView.animate(withDuration: 0.3) {
+                                self.flippedCards.first!.layer.opacity = 0
+                                self.flippedCards.last!.layer.opacity = 0
+                            // then deleting them from the hierarchy
+                            } completion: { _ in
+                                self.flippedCards.first!.removeFromSuperview()
+                                self.flippedCards.last!.removeFromSuperview()
+                                self.flippedCards = []
+                            }
+                        } else {
+                            // flip the cards back
+                            for card in self.flippedCards {
+                                (card as! FlippableView).flip()
+                            }
+                        }
+                    }
+                }
+            }
             return
         }
         
@@ -256,9 +291,9 @@ class BoardGameController: UIViewController {
     
     @objc func goBackAndSave(_ sender: UIBarButtonItem) {
         
-        if let cardPairsUpdated = editScreenController.cardPairsUpdated {
+        /* if let cardPairsUpdated = editScreenController.updatedCardPairs {
             cardsPairsCounts = cardPairsUpdated
-        }
+        } */
         navigationController?.popViewController(animated: true)
         
     }
@@ -311,14 +346,8 @@ class BoardGameController: UIViewController {
             cardTwo.tag = index
             cardsViews.append(cardTwo)
         }
-        flipComplitionHandlerAdd(cards: &cardsViews)
-        return cardsViews
-    }
-    
-    // add flip handler to all the cards
-    private func flipComplitionHandlerAdd(cards: inout [UIView]) {
-        for card in cards {
-            (card as! FlippableView).flipCompletionHandler = { [self] flippedCard in
+        for card in cardsViews {
+            (card as! FlippableView).flipCompletionHandler = { [unowned self] flippedCard in
                 // transfer the card to the top of the hierarchy
                 flippedCard.superview?.bringSubviewToFront(flippedCard)
                 
@@ -358,7 +387,9 @@ class BoardGameController: UIViewController {
                 }
             }
         }
+        return cardsViews
     }
+    
     private func placeCardsOnBoard(_ cards: [UIView]) {
         // deleting all cards from the playing field
         for card in cardViews {
