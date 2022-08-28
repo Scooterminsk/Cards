@@ -21,9 +21,8 @@ class EditScreenController: UITableViewController {
     lazy var cardColoursController = CardColoursController()
     lazy var backShapesController = BackShapesController()
     
-
-    // updated data properties
-    var cardPairsUpdated: Int?
+    // property for transition data from the card pairs controller
+    var updatedCardPairs = 8
     
     override func loadView() {
         super.loadView()
@@ -97,9 +96,6 @@ class EditScreenController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            cardPairsController.completionHandler = { [unowned self] updatedValue in
-                cardPairsUpdated = updatedValue
-            }
             self.navigationController?.pushViewController(cardPairsController, animated: true)
         case 1:
             self.navigationController?.pushViewController(cardTypesController, animated: true)
