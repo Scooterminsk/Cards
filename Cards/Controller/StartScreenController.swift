@@ -26,14 +26,14 @@ class StartScreenController: UIViewController {
         super.loadView()
         view.addSubview(startGameButton)
         view.addSubview(editScreenButton)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
     }
-
     
     // MARK: - Creating a button to start new game
     private func getStartGameButton() -> UIButton {
@@ -82,6 +82,7 @@ class StartScreenController: UIViewController {
     }
     
     @objc func goToEditScreen(_ sender: UIButton) {
+        self.navigationController?.viewControllers.insert(boardGameController, at: 0)
         self.navigationController?.pushViewController(editScreenController, animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }

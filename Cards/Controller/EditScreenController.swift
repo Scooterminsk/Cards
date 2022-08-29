@@ -30,7 +30,11 @@ class EditScreenController: UITableViewController {
         // set the title
         self.title = "Настройки игры"
         
+        // back bar button item changing
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -38,11 +42,16 @@ class EditScreenController: UITableViewController {
         // unabling scroll
         self.tableView.isScrollEnabled = false
         
-        // back bar button item changing
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            if self.navigationController?.viewControllers[0] is BoardGameController {
+                self.navigationController?.viewControllers.remove(at: 0)
+            }
+        }
     }
 
     // MARK: - Table view data source
@@ -80,7 +89,7 @@ class EditScreenController: UITableViewController {
             configuration.text = "Выберите количество пар одинаковых карт"
             configuration.secondaryText = "Выберите число от 1 до 20"
         case cardTypeChoosingCell:
-            configuration.text = "Выберите тип карт, используемые в игре"
+            configuration.text = "Выберите типы фигур, используемые в игре"
         case cardColoursChoosingCell:
             configuration.text = "Выберите цвета карт, используемые в игре"
         case backSideShapesChoosingCell:
