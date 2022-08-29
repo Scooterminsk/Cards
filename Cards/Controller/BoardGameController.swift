@@ -66,13 +66,14 @@ class BoardGameController: UIViewController {
         view.addSubview(settingsButton)
         // add playing field on the scene
         view.addSubview(boardGameView)
+        // add right navigation bar button
+        self.navigationItem.backBarButtonItem = goBackAndSaveButton
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.navigationItem.hidesBackButton = true
-        self.navigationItem.backBarButtonItem = goBackAndSaveButton
     }
     
     override func viewWillAppear(_ animated: Bool) {
