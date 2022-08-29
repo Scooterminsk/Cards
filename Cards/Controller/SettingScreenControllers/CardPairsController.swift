@@ -65,6 +65,9 @@ class CardPairsController: UIViewController {
         self.navigationController?.viewControllers.forEach { viewController in
             (viewController as? BoardGameController)?.cardsPairsCounts = selectedNumber
         }
+        if self.navigationController?.viewControllers[0] is BoardGameController {
+            self.navigationController?.viewControllers.remove(at: 0)
+        }
         self.navigationController?.popViewController(animated: true)
     }
 

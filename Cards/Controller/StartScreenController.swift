@@ -82,6 +82,7 @@ class StartScreenController: UIViewController {
     }
     
     @objc func goToEditScreen(_ sender: UIButton) {
+        self.navigationController?.viewControllers.insert(boardGameController, at: 0)
         self.navigationController?.pushViewController(editScreenController, animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
