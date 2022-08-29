@@ -62,8 +62,9 @@ class CardPairsController: UIViewController {
     
     @objc func savePairsCount(_ sender: UIBarButtonItem) {
         let selectedNumber = pickerView.selectedRow(inComponent: 0) + 1
-        let game = Game()
-        game.cardsCount = selectedNumber
+        self.navigationController?.viewControllers.forEach { viewController in
+            (viewController as? BoardGameController)?.cardsPairsCounts = selectedNumber
+        }
         self.navigationController?.popViewController(animated: true)
     }
 

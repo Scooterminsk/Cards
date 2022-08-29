@@ -10,11 +10,7 @@ import Foundation
 class Game {
     
     // pair of unique cards count
-    var cardsCount = 8 {
-        didSet {
-            print(cardsCount)
-        }
-    }
+    var cardsCount = 0
     
     // an array of generated cards
     var cards = [Card]()

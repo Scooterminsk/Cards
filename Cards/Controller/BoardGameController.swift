@@ -9,11 +9,11 @@ import UIKit
 
 class BoardGameController: UIViewController {
 
-    /*// unique card pairs count
-    var cardsPairsCounts = 8 */
+    // unique card pairs count
+    var cardsPairsCounts = 8
     
     // the 'Game' entity
-    var game = Game()
+    lazy var game: Game = getNewGame()
     
     // button for loading and overloading the game
     lazy var startButtonView = getStartButtonView()
@@ -113,8 +113,16 @@ class BoardGameController: UIViewController {
         return button
     }
     
-    @objc func startGame(_ sender: UIButton) {
+    private func getNewGame() -> Game {
+        let game = Game()
+        game.cardsCount = self.cardsPairsCounts
+        print(self.cardsPairsCounts)
         game.generateCards()
+        return game
+    }
+    @objc func startGame(_ sender: UIButton) {
+        flippedCards = []
+        game = getNewGame()
         let cards = getCardsBy(modelData: game.cards)
         placeCardsOnBoard(cards)
     }
