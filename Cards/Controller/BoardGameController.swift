@@ -12,8 +12,14 @@ class BoardGameController: UIViewController {
     // unique card pairs count
     var cardsPairsCounts = 8
     
+    // flips remaining to end the game
+    var flipsCount = 0
+    
     // the 'Game' entity
     lazy var game: Game = getNewGame()
+    
+    // score label
+    lazy var scoreLabel = getScoreLabel()
     
     // button for loading and overloading the game
     lazy var startButtonView = getStartButtonView()
@@ -56,6 +62,8 @@ class BoardGameController: UIViewController {
     
     override func loadView() {
         super.loadView()
+        // add the score label
+        view.addSubview(scoreLabel)
         // add the start button on the scene
         view.addSubview(startButtonView)
         // add the flip button on the scene
@@ -81,6 +89,20 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    private func getScoreLabel() -> UILabel {
+        // label creation
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+        
+        // label location changing
+        label.center.x = view.center.x
+        label.center.y = boardGameView.frame.minY + 20
+        
+        // label appearence settings
+        label.textAlignment = .center
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
+        
+        return label
+    }
     private func getStartButtonView() -> UIButton {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
@@ -117,6 +139,8 @@ class BoardGameController: UIViewController {
     private func getNewGame() -> Game {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
+        flipsCount = cardsPairsCounts
+        scoreLabel.text = "Осталось пар карт: \(self.cardsPairsCounts)"
         game.generateCards()
         return game
     }
@@ -390,10 +414,31 @@ class BoardGameController: UIViewController {
                         UIView.animate(withDuration: 0.3) {
                             self.flippedCards.first!.layer.opacity = 0
                             self.flippedCards.last!.layer.opacity = 0
+                            if self.flipsCount == 1 {
+                                self.flipsCount -= 1
+                                let alert = UIAlertController(title: "Вы выиграли!", message: "Можно начать новую игру или перейти на стартовый экран", preferredStyle: .alert)
+                                let newGameAction = UIAlertAction(title: "Новая игра", style: .cancel) { [self] _ in
+                                    flippedCards = []
+                                    game = getNewGame()
+                                    let cards = getCardsBy(modelData: game.cards)
+                                    placeCardsOnBoard(cards)
+                                }
+                                let toStartScreenAction = UIAlertAction(title: "На стартовый экран", style: .destructive) { [self] _ in
+                                    navigationController?.popToRootViewController(animated: true)
+                                }
+                                alert.addAction(newGameAction)
+                                alert.addAction(toStartScreenAction)
+                                
+                                self.present(alert, animated: true)
+                            } else {
+                                self.flipsCount -= 1
+                            }
                         // then deleting them from the hierarchy
                         } completion: { _ in
                             self.flippedCards.first!.removeFromSuperview()
                             self.flippedCards.last!.removeFromSuperview()
+                        
+                            self.scoreLabel.text = "Осталось пар карт: \(self.flipsCount)"
                             self.flippedCards = []
                         }
                     } else {
