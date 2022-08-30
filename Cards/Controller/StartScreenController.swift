@@ -23,6 +23,9 @@ class BackBarButtonItem: UIBarButtonItem {
 
 class StartScreenController: UIViewController {
    
+    // an image
+    lazy var image = getImage()
+    
     // start game button var
     lazy var startGameButton = getStartGameButton()
     
@@ -37,6 +40,7 @@ class StartScreenController: UIViewController {
     
     override func loadView() {
         super.loadView()
+        view.addSubview(image)
         view.addSubview(startGameButton)
         view.addSubview(editScreenButton)
         self.navigationItem.backBarButtonItem = BackBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
@@ -46,6 +50,21 @@ class StartScreenController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+    }
+    
+    // MARK: - Creating an image view to insert a picture on the screen
+    
+    private func getImage() -> UIImageView {
+        let imageName = "card-game.png"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        
+        imageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        
+        imageView.center.x = view.center.x
+        imageView.center.y = view.center.y - 130
+        
+        return imageView
     }
     
     // MARK: - Creating a button to start new game
