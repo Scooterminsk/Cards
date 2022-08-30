@@ -21,7 +21,7 @@ class Game {
         var cards = [Card]()
         let cardsCount1 = cardsCount
         for _ in 0...cardsCount1 - 1 {
-            let randomElement = (type: availableCardTypes.randomElement()!, color: CardColor.allCases.randomElement()!)
+            let randomElement = (type: availableCardTypes.randomElement()!, color: availableCardColors.randomElement()!)
             cards.append(randomElement)
         }
         self.cards = cards
