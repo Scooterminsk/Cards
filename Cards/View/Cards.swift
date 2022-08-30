@@ -14,6 +14,9 @@ protocol FlippableView: UIView {
     func flip()
 }
 
+// available back side patterns
+var backShapes = ["circle", "line"]
+
 class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     
     var isFlipped: Bool = false {
@@ -112,7 +115,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         view.backgroundColor = .white
         
         // random pattern choosing
-        switch ["circle", "line"].randomElement()! {
+        switch backShapes.randomElement()! {
         case "circle":
             let layer = BackSideCircle(size: self.bounds.size, fillColor: UIColor.black.cgColor)
             view.layer.addSublayer(layer)

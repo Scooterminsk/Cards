@@ -9,6 +9,10 @@ import UIKit
 
 class BackShapesController: UITableViewController {
     
+    // switches
+    let circlesSwitch = UISwitch()
+    let linesSwitch = UISwitch()
+    
     // right side navigation bar button
     lazy var goBackAndSaveButton = getBackButton()
 
@@ -29,6 +33,14 @@ class BackShapesController: UITableViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        circlesSwitch.isOn = backShapes.contains("circle") ? true : false
+        linesSwitch.isOn = backShapes.contains("line") ? true : false
+        
+    }
+    
     private func getBackButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(goBackAndSave(_:)))
         
@@ -36,7 +48,27 @@ class BackShapesController: UITableViewController {
     }
     
     @objc func goBackAndSave (_ sender: UIBarButtonItem) {
+        var newBackShapes = [String]()
+        let switches = [circlesSwitch, linesSwitch]
         
+        if switches.allSatisfy({ mySwitch in mySwitch.isOn == false }) {
+            let alert = UIAlertController(title: "Стой!", message: "Необходимо выбрать хотя бы 1 узор", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Назад", style: .cancel)
+            alert.addAction(action)
+            
+            self.present(alert, animated: true)
+            return
+        }
+        
+        if circlesSwitch.isOn && !newBackShapes.contains("circle") {
+            newBackShapes.append("circle")
+        }
+        if linesSwitch.isOn && !newBackShapes.contains("line") {
+            newBackShapes.append("line")
+        }
+        
+        backShapes = newBackShapes
+        self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Table view data source
@@ -55,17 +87,15 @@ class BackShapesController: UITableViewController {
         
         switch indexPath.row {
         case 0:
+            cell.accessoryView = circlesSwitch
             configuration.text = "Круги"
         case 1:
+            cell.accessoryView = linesSwitch
             configuration.text = "Линии"
         default:
             break
         }
-        
-        let mySwitch = UISwitch()
-        mySwitch.isOn = true
-        
-        cell.accessoryView = mySwitch
+
         cell.contentConfiguration = configuration
 
         return cell
