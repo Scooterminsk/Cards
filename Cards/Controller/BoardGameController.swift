@@ -333,6 +333,16 @@ class BoardGameController: UIViewController {
         boardView.layer.cornerRadius = 5
         boardView.backgroundColor = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.3)
         
+        // border line for score label
+        let lineLayer = CAShapeLayer()
+        let path = UIBezierPath()
+        lineLayer.strokeColor = UIColor.black.cgColor
+        path.move(to: CGPoint(x: (window?.frame.minX)!, y: (window?.frame.minY)! + 40))
+        path.addLine(to: CGPoint(x: (window?.frame.maxX)! - 20, y: (window?.frame.minY)! + 40))
+        lineLayer.path = path.cgPath
+        
+        boardView.layer.addSublayer(lineLayer)
+        
         return boardView
     }
     
@@ -408,7 +418,7 @@ class BoardGameController: UIViewController {
         for card in cardViews {
             // random coordinates generating for each card
             let randomXCoordinate = Int.random(in: 0...cardMaxXCoordinate)
-            let randomYCoordinate = Int.random(in: 0...cardMaxYCoordinate)
+            let randomYCoordinate = Int.random(in: 37...cardMaxYCoordinate)
             card.frame.origin = CGPoint(x: randomXCoordinate, y: randomYCoordinate)
             // place the card on the playing field
             boardGameView.addSubview(card)
