@@ -7,8 +7,25 @@
 
 import UIKit
 
+// disabling long press back button (callout menu)
+class BackBarButtonItem: UIBarButtonItem {
+    @available(iOS 14.0, *)
+    override var menu: UIMenu? {
+        set {
+            /* Don't set the menu here */
+            /* super.menu = menu */
+        }
+        get {
+            return super.menu
+        }
+    }
+}
+
 class StartScreenController: UIViewController {
    
+    // an image
+    lazy var image = getImage()
+    
     // start game button var
     lazy var startGameButton = getStartGameButton()
     
@@ -21,18 +38,33 @@ class StartScreenController: UIViewController {
     // edit screen controller var to transit to it from the home screen
     lazy var editScreenController = EditScreenController()
     
-    
     override func loadView() {
         super.loadView()
+        view.addSubview(image)
         view.addSubview(startGameButton)
         view.addSubview(editScreenButton)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = BackBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+    }
+    
+    // MARK: - Creating an image view to insert a picture on the screen
+    
+    private func getImage() -> UIImageView {
+        let imageName = "card-game.png"
+        let image = UIImage(named: imageName)
+        let imageView = UIImageView(image: image!)
+        
+        imageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+        
+        imageView.center.x = view.center.x
+        imageView.center.y = view.center.y - 130
+        
+        return imageView
     }
     
     // MARK: - Creating a button to start new game
@@ -83,6 +115,8 @@ class StartScreenController: UIViewController {
     
     @objc func goToEditScreen(_ sender: UIButton) {
         self.navigationController?.viewControllers.insert(boardGameController, at: 0)
+        self.navigationController?.viewControllers[0].navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        
         self.navigationController?.pushViewController(editScreenController, animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }

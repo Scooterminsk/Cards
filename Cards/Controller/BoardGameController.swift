@@ -12,8 +12,14 @@ class BoardGameController: UIViewController {
     // unique card pairs count
     var cardsPairsCounts = 8
     
+    // flips remaining to end the game
+    var flipsCount = 0
+    
     // the 'Game' entity
     lazy var game: Game = getNewGame()
+    
+    // score label
+    lazy var scoreLabel = getScoreLabel()
     
     // button for loading and overloading the game
     lazy var startButtonView = getStartButtonView()
@@ -56,6 +62,8 @@ class BoardGameController: UIViewController {
     
     override func loadView() {
         super.loadView()
+        // add the score label
+        view.addSubview(scoreLabel)
         // add the start button on the scene
         view.addSubview(startButtonView)
         // add the flip button on the scene
@@ -81,6 +89,20 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    private func getScoreLabel() -> UILabel {
+        // label creation
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+        
+        // label location changing
+        label.center.x = view.center.x
+        label.center.y = boardGameView.frame.minY + 20
+        
+        // label appearence settings
+        label.textAlignment = .center
+        label.font = UIFont(name: "HelveticaNeue-Bold", size: 16.0)
+        
+        return label
+    }
     private func getStartButtonView() -> UIButton {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
@@ -117,7 +139,8 @@ class BoardGameController: UIViewController {
     private func getNewGame() -> Game {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
-        print(self.cardsPairsCounts)
+        flipsCount = cardsPairsCounts
+        scoreLabel.text = "Осталось пар карт: \(self.cardsPairsCounts)"
         game.generateCards()
         return game
     }
@@ -291,14 +314,14 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    private func getBackBarButton() -> UIBarButtonItem {
+    private func getBackBarButton() -> BackBarButtonItem {
         // button creation
-        let button = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
+        let button = BackBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
         
         return button
     }
     
-    @objc func goBackAndSave(_ sender: UIBarButtonItem) {
+    @objc func goBackAndSave(_ sender: BackBarButtonItem) {
         
         /* if let cardPairsUpdated = editScreenController.updatedCardPairs {
             cardsPairsCounts = cardPairsUpdated
@@ -333,6 +356,16 @@ class BoardGameController: UIViewController {
         // changing style of the playing field
         boardView.layer.cornerRadius = 5
         boardView.backgroundColor = UIColor(red: 0.1, green: 0.9, blue: 0.1, alpha: 0.3)
+        
+        // border line for score label
+        let lineLayer = CAShapeLayer()
+        let path = UIBezierPath()
+        lineLayer.strokeColor = UIColor.black.cgColor
+        path.move(to: CGPoint(x: (window?.frame.minX)!, y: (window?.frame.minY)! + 40))
+        path.addLine(to: CGPoint(x: (window?.frame.maxX)! - 20, y: (window?.frame.minY)! + 40))
+        lineLayer.path = path.cgPath
+        
+        boardView.layer.addSublayer(lineLayer)
         
         return boardView
     }
@@ -381,10 +414,31 @@ class BoardGameController: UIViewController {
                         UIView.animate(withDuration: 0.3) {
                             self.flippedCards.first!.layer.opacity = 0
                             self.flippedCards.last!.layer.opacity = 0
+                            if self.flipsCount == 1 {
+                                self.flipsCount -= 1
+                                let alert = UIAlertController(title: "Вы выиграли!", message: "Можно начать новую игру или перейти на стартовый экран", preferredStyle: .alert)
+                                let newGameAction = UIAlertAction(title: "Новая игра", style: .cancel) { [self] _ in
+                                    flippedCards = []
+                                    game = getNewGame()
+                                    let cards = getCardsBy(modelData: game.cards)
+                                    placeCardsOnBoard(cards)
+                                }
+                                let toStartScreenAction = UIAlertAction(title: "На стартовый экран", style: .destructive) { [self] _ in
+                                    navigationController?.popToRootViewController(animated: true)
+                                }
+                                alert.addAction(newGameAction)
+                                alert.addAction(toStartScreenAction)
+                                
+                                self.present(alert, animated: true)
+                            } else {
+                                self.flipsCount -= 1
+                            }
                         // then deleting them from the hierarchy
                         } completion: { _ in
                             self.flippedCards.first!.removeFromSuperview()
                             self.flippedCards.last!.removeFromSuperview()
+                        
+                            self.scoreLabel.text = "Осталось пар карт: \(self.flipsCount)"
                             self.flippedCards = []
                         }
                     } else {
@@ -409,7 +463,7 @@ class BoardGameController: UIViewController {
         for card in cardViews {
             // random coordinates generating for each card
             let randomXCoordinate = Int.random(in: 0...cardMaxXCoordinate)
-            let randomYCoordinate = Int.random(in: 0...cardMaxYCoordinate)
+            let randomYCoordinate = Int.random(in: 37...cardMaxYCoordinate)
             card.frame.origin = CGPoint(x: randomXCoordinate, y: randomYCoordinate)
             // place the card on the playing field
             boardGameView.addSubview(card)

@@ -14,6 +14,9 @@ protocol FlippableView: UIView {
     func flip()
 }
 
+// available back side patterns
+var backShapes = ["circle", "line"]
+
 class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     
     var isFlipped: Bool = false {
@@ -112,7 +115,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         view.backgroundColor = .white
         
         // random pattern choosing
-        switch ["circle", "line"].randomElement()! {
+        switch backShapes.randomElement()! {
         case "circle":
             let layer = BackSideCircle(size: self.bounds.size, fillColor: UIColor.black.cgColor)
             view.layer.addSublayer(layer)
@@ -163,7 +166,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         if self.frame.origin == startTouchPoint {
             flip()
         }
-        if self.frame.maxX > ((window?.frame.maxX)! - 20) || self.frame.maxY > ((window?.frame.maxY)! - 150) || self.frame.origin.x < (window?.frame.minX)! || self.frame.origin.y < (window?.frame.minY)! {
+        if self.frame.maxX > ((window?.frame.maxX)! - 20) || self.frame.maxY > ((window?.frame.maxY)! - 150) || self.frame.origin.x < (window?.frame.minX)! || self.frame.origin.y < ((window?.frame.minY)! + 40) {
             // animatedly return the card to its original position
             UIView.animate(withDuration: 0.5, delay: 0) {
                 self.frame.origin = self.startTouchPoint
