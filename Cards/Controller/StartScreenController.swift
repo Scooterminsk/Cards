@@ -21,12 +21,25 @@ class StartScreenController: UIViewController {
     // edit screen controller var to transit to it from the home screen
     lazy var editScreenController = EditScreenController()
     
+    // disabling long press back button (callout menu)
+    class BackBarButtonItem: UIBarButtonItem {
+        @available(iOS 14.0, *)
+        override var menu: UIMenu? {
+            set {
+                /* Don't set the menu here */
+                /* super.menu = menu */
+            }
+            get {
+                return super.menu
+            }
+        }
+    }
     
     override func loadView() {
         super.loadView()
         view.addSubview(startGameButton)
         view.addSubview(editScreenButton)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = BackBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
         
     }
     
@@ -83,6 +96,8 @@ class StartScreenController: UIViewController {
     
     @objc func goToEditScreen(_ sender: UIButton) {
         self.navigationController?.viewControllers.insert(boardGameController, at: 0)
+        self.navigationController?.viewControllers[0].navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        
         self.navigationController?.pushViewController(editScreenController, animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
