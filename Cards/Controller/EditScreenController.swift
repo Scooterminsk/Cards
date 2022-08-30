@@ -31,7 +31,7 @@ class EditScreenController: UITableViewController {
         self.title = "Настройки игры"
         
         // back bar button item changing
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = BackBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
         
     }
     

@@ -9,6 +9,12 @@ import UIKit
 
 class CardTypesController: UITableViewController {
     
+    // switches
+    let circleSwitch = UISwitch()
+    let squareSwitch = UISwitch()
+    let crossSwitch = UISwitch()
+    let fillSwitch = UISwitch()
+    
     // save button
     lazy var saveButton = getSaveButton()
     
@@ -29,6 +35,15 @@ class CardTypesController: UITableViewController {
         self.tableView.allowsSelection = false
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        circleSwitch.isOn = availableCardTypes.contains(.circle) ? true : false
+        squareSwitch.isOn = availableCardTypes.contains(.square) ? true : false
+        crossSwitch.isOn = availableCardTypes.contains(.cross) ? true : false
+        fillSwitch.isOn = availableCardTypes.contains(.fill) ? true: false
+    }
 
     private func getSaveButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(saveAndGoBack(_:)))
@@ -37,6 +52,34 @@ class CardTypesController: UITableViewController {
     }
     
     @objc func saveAndGoBack(_ sender: UIBarButtonItem) {
+        
+        var newAvailableCardTypes: [CardType] = []
+        let switches = [circleSwitch, squareSwitch, crossSwitch, fillSwitch]
+        
+        if switches.allSatisfy({ mySwitch in mySwitch.isOn == false}) {
+            let alert = UIAlertController(title: "Стой!", message: "Необходимо выбрать хотя бы 1 фигуру", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "Назад", style: .cancel)
+            alert.addAction(alertAction)
+            
+            self.present(alert, animated: true)
+            return
+        }
+        
+        if circleSwitch.isOn && !newAvailableCardTypes.contains(.circle){
+            newAvailableCardTypes.append(.circle)
+        }
+        if squareSwitch.isOn && !newAvailableCardTypes.contains(.square){
+            newAvailableCardTypes.append(.square)
+        }
+        if crossSwitch.isOn && !newAvailableCardTypes.contains(.cross){
+            newAvailableCardTypes.append(.cross)
+        }
+        if fillSwitch.isOn && !newAvailableCardTypes.contains(.fill){
+            newAvailableCardTypes.append(.fill)
+        }
+        
+        availableCardTypes = newAvailableCardTypes
+        self.navigationController?.popViewController(animated: true)
         
     }
     
@@ -57,19 +100,20 @@ class CardTypesController: UITableViewController {
         
         switch indexPath.row {
         case 0:
+            cell.accessoryView = circleSwitch
             configuration.text = "Круг"
         case 1:
+            cell.accessoryView = squareSwitch
             configuration.text = "Квадрат"
         case 2:
+            cell.accessoryView = crossSwitch
             configuration.text = "Крест"
         case 3:
+            cell.accessoryView = fillSwitch
             configuration.text = "Сплошное заполнение"
         default:
             break
         }
-        let mySwitch = UISwitch()
-        mySwitch.isOn = true
-        cell.accessoryView = mySwitch
         cell.contentConfiguration = configuration
         return cell
     }

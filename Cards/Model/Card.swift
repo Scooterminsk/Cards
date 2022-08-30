@@ -17,6 +17,9 @@ enum CardType: CaseIterable {
     case fill
 }
 
+// available card types array
+var availableCardTypes: [CardType] = [.circle, .unfilledCircle, .cross, .square, .fill]
+
 // card color
 enum CardColor: CaseIterable {
     case red
@@ -28,6 +31,9 @@ enum CardColor: CaseIterable {
     case purple
     case orange
 }
+
+// available card colors array
+var availableCardColors: [CardColor] = [.red, .green, .black, .gray, .brown, .yellow, .purple, .orange]
 
 // playing card
 typealias Card = (type: CardType, color: CardColor)

@@ -117,7 +117,6 @@ class BoardGameController: UIViewController {
     private func getNewGame() -> Game {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
-        print(self.cardsPairsCounts)
         game.generateCards()
         return game
     }
@@ -291,14 +290,14 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    private func getBackBarButton() -> UIBarButtonItem {
+    private func getBackBarButton() -> BackBarButtonItem {
         // button creation
-        let button = UIBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
+        let button = BackBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
         
         return button
     }
     
-    @objc func goBackAndSave(_ sender: UIBarButtonItem) {
+    @objc func goBackAndSave(_ sender: BackBarButtonItem) {
         
         /* if let cardPairsUpdated = editScreenController.updatedCardPairs {
             cardsPairsCounts = cardPairsUpdated

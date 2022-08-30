@@ -7,6 +7,20 @@
 
 import UIKit
 
+// disabling long press back button (callout menu)
+class BackBarButtonItem: UIBarButtonItem {
+    @available(iOS 14.0, *)
+    override var menu: UIMenu? {
+        set {
+            /* Don't set the menu here */
+            /* super.menu = menu */
+        }
+        get {
+            return super.menu
+        }
+    }
+}
+
 class StartScreenController: UIViewController {
    
     // start game button var
@@ -20,20 +34,6 @@ class StartScreenController: UIViewController {
     
     // edit screen controller var to transit to it from the home screen
     lazy var editScreenController = EditScreenController()
-    
-    // disabling long press back button (callout menu)
-    class BackBarButtonItem: UIBarButtonItem {
-        @available(iOS 14.0, *)
-        override var menu: UIMenu? {
-            set {
-                /* Don't set the menu here */
-                /* super.menu = menu */
-            }
-            get {
-                return super.menu
-            }
-        }
-    }
     
     override func loadView() {
         super.loadView()
