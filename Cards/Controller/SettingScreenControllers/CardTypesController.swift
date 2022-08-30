@@ -11,6 +11,7 @@ class CardTypesController: UITableViewController {
     
     // switches
     let circleSwitch = UISwitch()
+    let unfilledCircleSwitch = UISwitch()
     let squareSwitch = UISwitch()
     let crossSwitch = UISwitch()
     let fillSwitch = UISwitch()
@@ -40,6 +41,7 @@ class CardTypesController: UITableViewController {
         super.viewWillAppear(animated)
         
         circleSwitch.isOn = availableCardTypes.contains(.circle) ? true : false
+        unfilledCircleSwitch.isOn = availableCardTypes.contains(.unfilledCircle) ? true : false
         squareSwitch.isOn = availableCardTypes.contains(.square) ? true : false
         crossSwitch.isOn = availableCardTypes.contains(.cross) ? true : false
         fillSwitch.isOn = availableCardTypes.contains(.fill) ? true: false
@@ -54,7 +56,8 @@ class CardTypesController: UITableViewController {
     @objc func saveAndGoBack(_ sender: UIBarButtonItem) {
         
         var newAvailableCardTypes: [CardType] = []
-        let switches = [circleSwitch, squareSwitch, crossSwitch, fillSwitch]
+        let switches = [circleSwitch, unfilledCircleSwitch, squareSwitch, crossSwitch, fillSwitch]
+        let myTypes: [CardType] = [.circle, .unfilledCircle, .square, .cross, .fill]
         
         if switches.allSatisfy({ mySwitch in mySwitch.isOn == false}) {
             let alert = UIAlertController(title: "Стой!", message: "Необходимо выбрать хотя бы 1 фигуру", preferredStyle: .alert)
@@ -65,17 +68,10 @@ class CardTypesController: UITableViewController {
             return
         }
         
-        if circleSwitch.isOn && !newAvailableCardTypes.contains(.circle){
-            newAvailableCardTypes.append(.circle)
-        }
-        if squareSwitch.isOn && !newAvailableCardTypes.contains(.square){
-            newAvailableCardTypes.append(.square)
-        }
-        if crossSwitch.isOn && !newAvailableCardTypes.contains(.cross){
-            newAvailableCardTypes.append(.cross)
-        }
-        if fillSwitch.isOn && !newAvailableCardTypes.contains(.fill){
-            newAvailableCardTypes.append(.fill)
+        for mySwitch in switches {
+            if mySwitch.isOn && !newAvailableCardTypes.contains(myTypes[switches.firstIndex(of: mySwitch)!]) {
+                newAvailableCardTypes.append(myTypes[switches.firstIndex(of: mySwitch)!])
+            }
         }
         
         availableCardTypes = newAvailableCardTypes
@@ -90,7 +86,7 @@ class CardTypesController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 5
     }
 
     
@@ -103,12 +99,15 @@ class CardTypesController: UITableViewController {
             cell.accessoryView = circleSwitch
             configuration.text = "Круг"
         case 1:
+            cell.accessoryView = unfilledCircleSwitch
+            configuration.text = "Незакрашенный круг"
+        case 2:
             cell.accessoryView = squareSwitch
             configuration.text = "Квадрат"
-        case 2:
+        case 3:
             cell.accessoryView = crossSwitch
             configuration.text = "Крест"
-        case 3:
+        case 4:
             cell.accessoryView = fillSwitch
             configuration.text = "Сплошное заполнение"
         default:
