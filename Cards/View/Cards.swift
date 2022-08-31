@@ -86,7 +86,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     // back side card view
     lazy var backSideView: UIView = self.getBackSideView()
     
-    // returns view for the front side of the card
+    //MARK: - Returns view for the front side of the card
     private func getFrontSideView() -> UIView {
         let view = UIView(frame: self.bounds)
         view.backgroundColor = .white
@@ -108,7 +108,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         return view
     }
     
-    // returns view for the back side of the card
+    //MARK: - Returns view for the back side of the card
     private func getBackSideView() -> UIView {
         let view = UIView(frame: self.bounds)
         
@@ -145,6 +145,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
     */
     
+    // MARK: - Touches
     // anchor point
     private var anchorPoint: CGPoint = CGPoint(x: 0, y: 0)
     

@@ -18,6 +18,7 @@ extension ShapeLayerProtocol {
     }
 }
 
+// MARK: - Circle shape
 class CircleShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
@@ -43,6 +44,7 @@ class CircleShape: CAShapeLayer, ShapeLayerProtocol {
     }
 }
 
+// MARK: - Square shape
 class SquareShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
@@ -63,6 +65,7 @@ class SquareShape: CAShapeLayer, ShapeLayerProtocol {
     }
 }
 
+// MARK: - Cross shape
 class CrossShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
@@ -87,6 +90,7 @@ class CrossShape: CAShapeLayer, ShapeLayerProtocol {
     }
 }
 
+// MARK: - Fill shape
 class FillShape: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
@@ -99,6 +103,7 @@ class FillShape: CAShapeLayer, ShapeLayerProtocol {
     }
 }
 
+// MARK: - Back side circle
 class BackSideCircle: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()
@@ -132,6 +137,7 @@ class BackSideCircle: CAShapeLayer, ShapeLayerProtocol {
     }
 }
 
+// MARK: - Back side line
 class BackSideLine: CAShapeLayer, ShapeLayerProtocol {
     required init(size: CGSize, fillColor: CGColor) {
         super.init()

@@ -51,7 +51,8 @@ class CardTypesController: UITableViewController {
         crossSwitch.isOn = availableCardTypes.contains(.cross) ? true : false
         fillSwitch.isOn = availableCardTypes.contains(.fill) ? true: false
     }
-
+    
+    // MARK: - Add right navigation bar button
     private func getSaveButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(saveAndGoBack(_:)))
         

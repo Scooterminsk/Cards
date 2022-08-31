@@ -46,6 +46,7 @@ class BackShapesController: UITableViewController {
         
     }
     
+    // MARK: - Add right navigation bar button
     private func getBackButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(goBackAndSave(_:)))
         

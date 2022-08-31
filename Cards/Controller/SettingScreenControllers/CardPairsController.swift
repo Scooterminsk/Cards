@@ -83,6 +83,7 @@ class CardPairsController: UIViewController {
     
 }
 
+// MARK: - Protocols sighning
 extension CardPairsController: UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

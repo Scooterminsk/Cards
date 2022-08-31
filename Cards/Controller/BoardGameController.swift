@@ -117,6 +117,7 @@ class BoardGameController: UIViewController {
         backShapes = storage.loadBackShapes()
     }
     
+    // MARK: - Score label
     private func getScoreLabel() -> UILabel {
         // label creation
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
@@ -131,6 +132,8 @@ class BoardGameController: UIViewController {
         
         return label
     }
+    
+    // MARK: - Start button
     private func getStartButtonView() -> UIButton {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
@@ -164,6 +167,7 @@ class BoardGameController: UIViewController {
         return button
     }
     
+    // MARK: - Game entity getting
     private func getNewGame() -> Game {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
@@ -179,6 +183,7 @@ class BoardGameController: UIViewController {
         placeCardsOnBoard(cards)
     }
     
+    // MARK: - All cards fliping button
     private func getAllCardsFlipButton() -> UIButton {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
@@ -272,6 +277,7 @@ class BoardGameController: UIViewController {
         }
     }
     
+    // MARK: - Back button
     private func getDismissButton() -> UIButton {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 65, height: 50))
@@ -309,6 +315,7 @@ class BoardGameController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    // MARK: - Settings button
     private func getSettingsButton() -> UIButton {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
@@ -342,6 +349,7 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
+    // MARK: - Custom back bar button
     private func getBackBarButton() -> BackBarButtonItem {
         // button creation
         let button = BackBarButtonItem(title: "Назад", style: .plain, target: self, action: #selector(goBackAndSave(_:)))
@@ -358,6 +366,7 @@ class BoardGameController: UIViewController {
         
     }
     
+    // MARK: - Board View
     private func getBoardGameView() -> UIView {
         // game field padding from the nearest elements
         let margin: CGFloat = 10
@@ -398,6 +407,7 @@ class BoardGameController: UIViewController {
         return boardView
     }
     
+    // MARK: - Function for getting cards
     // cards array generating on basis of data from model
     private func getCardsBy(modelData: [Card]) -> [UIView] {
         // storage for cards view
@@ -481,6 +491,7 @@ class BoardGameController: UIViewController {
         return cardsViews
     }
     
+    // MARK: Function for placing cards on board
     private func placeCardsOnBoard(_ cards: [UIView]) {
         // deleting all cards from the playing field
         for card in cardViews {

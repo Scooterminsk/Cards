@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E4040D5328BF627B0084D7B6 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4040D5228BF627B0084D7B6 /* Storage.swift */; };
+		E4040D5528BF95490084D7B6 /* CustomBackBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4040D5428BF95490084D7B6 /* CustomBackBarButton.swift */; };
 		E41064B328A542E400BCDBD6 /* CardViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41064B228A542E400BCDBD6 /* CardViewFactory.swift */; };
 		E482C18428BA165C0066E1F0 /* EditScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E482C18328BA165C0066E1F0 /* EditScreenController.swift */; };
 		E494C2D62891380400E02903 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E494C2D52891380400E02903 /* AppDelegate.swift */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		E4040D5228BF627B0084D7B6 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		E4040D5428BF95490084D7B6 /* CustomBackBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackBarButton.swift; sourceTree = "<group>"; };
 		E41064B228A542E400BCDBD6 /* CardViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewFactory.swift; sourceTree = "<group>"; };
 		E482C18328BA165C0066E1F0 /* EditScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreenController.swift; sourceTree = "<group>"; };
 		E494C2D22891380400E02903 /* Cards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cards.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +68,7 @@
 			children = (
 				E41064B228A542E400BCDBD6 /* CardViewFactory.swift */,
 				E4040D5228BF627B0084D7B6 /* Storage.swift */,
+				E4040D5428BF95490084D7B6 /* CustomBackBarButton.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4F7A21B28A4053100CC0D7B /* BoardGameController.swift in Sources */,
+				E4040D5528BF95490084D7B6 /* CustomBackBarButton.swift in Sources */,
 				E4B9CAAE28B8F71E00E28C8B /* StartScreenController.swift in Sources */,
 				E4F7A21E28A4071900CC0D7B /* Card.swift in Sources */,
 				E4F7A22028A4085E00CC0D7B /* Game.swift in Sources */,

@@ -56,7 +56,8 @@ class CardColoursController: UITableViewController {
         purpleSwitch.isOn = availableCardColors.contains(.purple) ? true : false
         orangeSwitch.isOn = availableCardColors.contains(.orange) ? true : false
     }
-    
+   
+    // MARK: - Add right navigation bar button
     private func getSaveButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(goBackAndSave(_:)))
         
