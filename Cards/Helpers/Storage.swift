@@ -19,7 +19,7 @@ protocol SettingsStorageProtocol {
     
     // loading and saving of card colors from settings
     func loadCardColors() -> [CardColor]
-    func savaCardColors(colors: [CardColor])
+    func saveCardColors(colors: [CardColor])
     
     // loading and saving of back shapes from settings
     func loadBackShapes() -> [String]
@@ -139,7 +139,7 @@ class SettingsStorage: SettingsStorageProtocol {
         return result
     }
     
-    func savaCardColors(colors: [CardColor]) {
+    func saveCardColors(colors: [CardColor]) {
         var arrayForStorage = [String]()
         for color in colors {
             switch color {

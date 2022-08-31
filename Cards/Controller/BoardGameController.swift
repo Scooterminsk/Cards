@@ -9,6 +9,9 @@ import UIKit
 
 class BoardGameController: UIViewController {
 
+    // user defaults storage
+    var storage: SettingsStorageProtocol!
+    
     // unique card pairs count
     var cardsPairsCounts = 8
     
@@ -84,11 +87,34 @@ class BoardGameController: UIViewController {
         self.navigationItem.hidesBackButton = true
         
         scoreLabel.text = "Осталось пар карт: 0"
+        
+        storage = SettingsStorage()
+        loadCardsCount()
+        loadCardTypes()
+        loadCardColors()
+        loadBackShapes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    // MARK: - Loading data from User Defaults storage
+    private func loadCardsCount() {
+        cardsPairsCounts = storage.loadCardPairsCount()
+    }
+    
+    private func loadCardTypes() {
+        availableCardTypes = storage.loadCardTypes()
+    }
+    
+    private func loadCardColors() {
+        availableCardColors = storage.loadCardColors()
+    }
+    
+    private func loadBackShapes() {
+        backShapes = storage.loadBackShapes()
     }
     
     private func getScoreLabel() -> UILabel {

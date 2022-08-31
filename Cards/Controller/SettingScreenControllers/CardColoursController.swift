@@ -8,7 +8,10 @@
 import UIKit
 
 class CardColoursController: UITableViewController {
-
+    
+    // user defaults storage
+    var storage: SettingsStorageProtocol!
+    
     // switches
     let redSwitch = UISwitch()
     let greenSwitch = UISwitch()
@@ -36,6 +39,8 @@ class CardColoursController: UITableViewController {
        
         self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = false
+        
+        storage = SettingsStorage()
        
     }
     
@@ -78,6 +83,7 @@ class CardColoursController: UITableViewController {
             }
         }
         
+        storage.saveCardColors(colors: newAvailableCardColors)
         availableCardColors = newAvailableCardColors
         self.navigationController?.popViewController(animated: true)
         
