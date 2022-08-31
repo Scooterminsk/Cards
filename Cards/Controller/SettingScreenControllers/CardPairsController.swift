@@ -9,6 +9,9 @@ import UIKit
 
 class CardPairsController: UIViewController {
 
+    // user defaults storage
+    var storage: SettingsStorageProtocol!
+    
     // picker view entity
     lazy var pickerView = getPickerView()
     
@@ -30,8 +33,9 @@ class CardPairsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.view.backgroundColor = .white
+        storage = SettingsStorage()
+        pickerView.selectRow(storage.loadCardPairsCount(), inComponent: 0, animated: false)
     }
     
     // MARK: - Picker view creation
@@ -63,6 +67,8 @@ class CardPairsController: UIViewController {
     @objc func savePairsCount(_ sender: UIBarButtonItem) {
         let selectedNumber = pickerView.selectedRow(inComponent: 0) + 1
         
+        storage.saveCardPairsCount(count: selectedNumber)
+        
         self.navigationController?.viewControllers.forEach { viewController in
             (viewController as? BoardGameController)?.cardsPairsCounts = selectedNumber
         }
@@ -78,6 +84,7 @@ class CardPairsController: UIViewController {
     
 }
 
+// MARK: - Protocols sighning
 extension CardPairsController: UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

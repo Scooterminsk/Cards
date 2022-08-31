@@ -9,6 +9,9 @@ import UIKit
 
 class CardTypesController: UITableViewController {
     
+    // user defaults storage
+    var storage: SettingsStorageProtocol!
+    
     // switches
     let circleSwitch = UISwitch()
     let unfilledCircleSwitch = UISwitch()
@@ -35,6 +38,8 @@ class CardTypesController: UITableViewController {
         self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = false
         
+        storage = SettingsStorage()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,7 +51,8 @@ class CardTypesController: UITableViewController {
         crossSwitch.isOn = availableCardTypes.contains(.cross) ? true : false
         fillSwitch.isOn = availableCardTypes.contains(.fill) ? true: false
     }
-
+    
+    // MARK: - Add right navigation bar button
     private func getSaveButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(saveAndGoBack(_:)))
         
@@ -74,6 +80,7 @@ class CardTypesController: UITableViewController {
             }
         }
         
+        storage.saveCardTypes(types: newAvailableCardTypes)
         availableCardTypes = newAvailableCardTypes
         self.navigationController?.popViewController(animated: true)
         

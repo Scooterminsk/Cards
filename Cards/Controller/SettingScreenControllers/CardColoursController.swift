@@ -8,7 +8,10 @@
 import UIKit
 
 class CardColoursController: UITableViewController {
-
+    
+    // user defaults storage
+    var storage: SettingsStorageProtocol!
+    
     // switches
     let redSwitch = UISwitch()
     let greenSwitch = UISwitch()
@@ -36,6 +39,8 @@ class CardColoursController: UITableViewController {
        
         self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = false
+        
+        storage = SettingsStorage()
        
     }
     
@@ -51,7 +56,8 @@ class CardColoursController: UITableViewController {
         purpleSwitch.isOn = availableCardColors.contains(.purple) ? true : false
         orangeSwitch.isOn = availableCardColors.contains(.orange) ? true : false
     }
-    
+   
+    // MARK: - Add right navigation bar button
     private func getSaveButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(goBackAndSave(_:)))
         
@@ -78,6 +84,7 @@ class CardColoursController: UITableViewController {
             }
         }
         
+        storage.saveCardColors(colors: newAvailableCardColors)
         availableCardColors = newAvailableCardColors
         self.navigationController?.popViewController(animated: true)
         

@@ -9,6 +9,9 @@ import UIKit
 
 class BackShapesController: UITableViewController {
     
+    // user defaults storage
+    var storage: SettingsStorageProtocol!
+    
     // switches
     let circlesSwitch = UISwitch()
     let linesSwitch = UISwitch()
@@ -30,6 +33,8 @@ class BackShapesController: UITableViewController {
         
         self.tableView.isScrollEnabled = false
         self.tableView.allowsSelection = false
+        
+        storage = SettingsStorage()
 
     }
     
@@ -41,6 +46,7 @@ class BackShapesController: UITableViewController {
         
     }
     
+    // MARK: - Add right navigation bar button
     private func getBackButton() -> UIBarButtonItem {
         let button = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(goBackAndSave(_:)))
         
@@ -67,6 +73,7 @@ class BackShapesController: UITableViewController {
             newBackShapes.append("line")
         }
         
+        storage.saveBackShapes(shapes: newBackShapes)
         backShapes = newBackShapes
         self.navigationController?.popViewController(animated: true)
     }
