@@ -35,6 +35,7 @@ class CardPairsController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         storage = SettingsStorage()
+        pickerView.selectRow(storage.loadCardPairsCount(), inComponent: 0, animated: false)
     }
     
     // MARK: - Picker view creation
