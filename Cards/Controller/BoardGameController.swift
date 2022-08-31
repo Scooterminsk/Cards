@@ -82,6 +82,8 @@ class BoardGameController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.navigationItem.hidesBackButton = true
+        
+        scoreLabel.text = "Осталось пар карт: 0"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -155,7 +157,7 @@ class BoardGameController: UIViewController {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
         // button location changing
-        button.center.x = view.center.x - 30
+        button.center.x = view.center.x - 24
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -283,7 +285,7 @@ class BoardGameController: UIViewController {
     
     private func getSettingsButton() -> UIButton {
         // button creation
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 111, height: 50))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         // button location changing
         button.center.x = view.center.x + 60
         
