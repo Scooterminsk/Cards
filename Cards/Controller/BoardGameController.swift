@@ -188,7 +188,7 @@ class BoardGameController: UIViewController {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
         // button location changing
-        button.center.x = view.center.x - 24
+        button.center.x = settingsButton.frame.minX - 35
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -320,7 +320,7 @@ class BoardGameController: UIViewController {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         // button location changing
-        button.center.x = view.center.x + 60
+        button.center.x = backButton.frame.minX - 55
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
