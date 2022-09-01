@@ -38,3 +38,5 @@ var availableCardColors: [CardColor] = [.red, .green, .black, .gray, .brown, .ye
 // playing card
 typealias Card = (type: CardType, color: CardColor)
 
+// shows if all cards are flipped
+var allCardsFlipped = false

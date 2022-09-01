@@ -39,10 +39,10 @@ class SettingsStorage: SettingsStorageProtocol {
     // storage key for back side shapes
     private var storageKeyBackShapes = "backShapes"
     
-    // functions for card pairs count
+    // MARK: - functions for card pairs count
     func loadCardPairsCount() -> Int {
         var result = 8
-        let dataFromStorage = storage.integer(forKey: "cardPairs")
+        let dataFromStorage = storage.integer(forKey: storageKeyCardPairs)
         guard dataFromStorage > 0 else {
             return result
         }
@@ -51,14 +51,14 @@ class SettingsStorage: SettingsStorageProtocol {
     }
     
     func saveCardPairsCount(count: Int) {
-        storage.set(count, forKey: "cardPairs")
+        storage.set(count, forKey: storageKeyCardPairs)
     }
     
-    // functions for available card types
+    // MARK: - functions for available card types
     func loadCardTypes() -> [CardType] {
         var result: [CardType] = [.circle, .unfilledCircle, .cross, .square, .fill]
         var tmp = [CardType]()
-        let dataFromStorage = storage.array(forKey: "cardTypes")
+        let dataFromStorage = storage.array(forKey: storageKeyCardTypes)
         
         guard let resultArr = dataFromStorage as? [String] else {
             return result
@@ -100,14 +100,14 @@ class SettingsStorage: SettingsStorageProtocol {
                 arrayForStorage.append("fill")
             }
         }
-        storage.set(arrayForStorage, forKey: "cardTypes")
+        storage.set(arrayForStorage, forKey: storageKeyCardTypes)
     }
     
-    // functions for available card colors
+    // MARK: - functions for available card colors
     func loadCardColors() -> [CardColor] {
         var result: [CardColor] = [.red, .green, .black, .gray, .brown, .yellow, .purple, .orange]
         var tmp = [CardColor]()
-        let dataFromStorage = storage.array(forKey: "cardColors")
+        let dataFromStorage = storage.array(forKey: storageKeyCardColors)
         
         guard let resultArr = dataFromStorage as? [String] else {
             return result
@@ -161,12 +161,13 @@ class SettingsStorage: SettingsStorageProtocol {
                 arrayForStorage.append("orange")
             }
         }
-        storage.set(arrayForStorage, forKey: "cardColors")
+        storage.set(arrayForStorage, forKey: storageKeyCardColors)
     }
     
+    // MARK: - Functions for available back shapes
     func loadBackShapes() -> [String] {
         let result = ["circle", "line"]
-        let dataFromStorage = storage.array(forKey: "backShapes") as? [String]
+        let dataFromStorage = storage.array(forKey: storageKeyBackShapes) as? [String]
         guard let resultArr = dataFromStorage else {
             return result
         }
@@ -174,6 +175,6 @@ class SettingsStorage: SettingsStorageProtocol {
     }
     
     func saveBackShapes(shapes: [String]) {
-        storage.set(shapes, forKey: "backShapes")
+        storage.set(shapes, forKey: storageKeyBackShapes)
     }
 }

@@ -9,8 +9,11 @@ import UIKit
 
 class BoardGameController: UIViewController {
 
-    // user defaults storage
-    var storage: SettingsStorageProtocol!
+    // user defaults settings storage
+    var settingsStorage: SettingsStorageProtocol!
+    
+    // user defaults game storage
+    var gameStorage: GameStorage!
     
     // unique card pairs count
     var cardsPairsCounts = 8
@@ -88,11 +91,13 @@ class BoardGameController: UIViewController {
         
         scoreLabel.text = "Осталось пар карт: 0"
         
-        storage = SettingsStorage()
+        settingsStorage = SettingsStorage()
         loadCardsCount()
         loadCardTypes()
         loadCardColors()
         loadBackShapes()
+        
+        gameStorage = GameStorage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,19 +107,19 @@ class BoardGameController: UIViewController {
     
     // MARK: - Loading data from User Defaults storage
     private func loadCardsCount() {
-        cardsPairsCounts = storage.loadCardPairsCount()
+        cardsPairsCounts = settingsStorage.loadCardPairsCount()
     }
     
     private func loadCardTypes() {
-        availableCardTypes = storage.loadCardTypes()
+        availableCardTypes = settingsStorage.loadCardTypes()
     }
     
     private func loadCardColors() {
-        availableCardColors = storage.loadCardColors()
+        availableCardColors = settingsStorage.loadCardColors()
     }
     
     private func loadBackShapes() {
-        backShapes = storage.loadBackShapes()
+        backShapes = settingsStorage.loadBackShapes()
     }
     
     // MARK: - Score label
@@ -188,7 +193,7 @@ class BoardGameController: UIViewController {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
         // button location changing
-        button.center.x = view.center.x - 24
+        button.center.x = settingsButton.frame.minX - 35
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -222,11 +227,15 @@ class BoardGameController: UIViewController {
         if cardViews.allSatisfy({ ($0 as! FlippableView).isFlipped }) {
             for card in cardViews {
                 (card as! FlippableView).flip()
+                (card as! FlippableView).isFlipped = false
+                allCardsFlipped = false
             }
             for card in cardViews{
                 (card as! FlippableView).flipCompletionHandler = { [unowned self] flippedCard in
                     // transfer the card to the top of the hierarchy
-                    flippedCard.superview?.bringSubviewToFront(flippedCard)
+                    if flippedCard.isFlipped {
+                        flippedCard.superview?.bringSubviewToFront(flippedCard)
+                    }
                     
                     // add or delete a card
                     if flippedCard.isFlipped {
@@ -272,6 +281,7 @@ class BoardGameController: UIViewController {
                 continue
             } else {
                 (card as! FlippableView).flip()
+                allCardsFlipped = true
                 (card as! FlippableView).flipCompletionHandler = nil
             }
         }
@@ -320,7 +330,7 @@ class BoardGameController: UIViewController {
         // button creation
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
         // button location changing
-        button.center.x = view.center.x + 60
+        button.center.x = backButton.frame.minX - 55
         
         // getting access to the current window
         let scenes = UIApplication.shared.connectedScenes
@@ -478,6 +488,7 @@ class BoardGameController: UIViewController {
                         
                             self.scoreLabel.text = "Осталось пар карт: \(self.flipsCount)"
                             self.flippedCards = []
+                            self.gameStorage.saveCardViews(views: cardsViews)
                         }
                     } else {
                         // flip the cards back
@@ -507,6 +518,7 @@ class BoardGameController: UIViewController {
             // place the card on the playing field
             boardGameView.addSubview(card)
         }
+        gameStorage.saveCardViews(views: cardViews)
     }
 
 }
