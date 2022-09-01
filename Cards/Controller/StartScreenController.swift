@@ -18,6 +18,9 @@ class StartScreenController: UIViewController {
     // to edit screen button var
     lazy var editScreenButton = getToEditScreenButton()
     
+    // continue game button var
+    lazy var continueGameButton = getContinueGameButton()
+    
     // board game controller var to transit to it from the home screen
     lazy var boardGameController = BoardGameController()
     
@@ -29,6 +32,7 @@ class StartScreenController: UIViewController {
         view.addSubview(image)
         view.addSubview(startGameButton)
         view.addSubview(editScreenButton)
+        view.addSubview(continueGameButton)
         self.navigationItem.backBarButtonItem = BackBarButtonItem(title: "Назад", style: .plain, target: nil, action: nil)
         
     }
@@ -94,7 +98,7 @@ class StartScreenController: UIViewController {
         button.layer.cornerRadius = 10
         
         // attaching a button click handler
-        button.addTarget(nibName, action: #selector(goToEditScreen(_:)), for: .touchUpInside)
+        button.addTarget(nil, action: #selector(goToEditScreen(_:)), for: .touchUpInside)
         
         return button
     }
@@ -105,5 +109,30 @@ class StartScreenController: UIViewController {
         
         self.navigationController?.pushViewController(editScreenController, animated: true)
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    // MARK: - Creating a button to continue the previous game
+    private func getContinueGameButton() -> UIButton {
+        // button creation
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 150, height: 50))
+        // button location changing
+        button.center.x = view.center.x
+        button.center.y = editScreenButton.frame.maxY + 60
+        
+        // button appearence settings
+        button.setTitle("Продолжить", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.backgroundColor = .yellow
+        button.layer.cornerRadius = 10
+        
+        // attaching a button click handler
+        button.addTarget(nil, action: #selector(continueGame(_:)), for: .touchUpInside)
+        
+        return button
+    }
+    
+    @objc func continueGame(_ sender: UIButton) {
+        
     }
 }

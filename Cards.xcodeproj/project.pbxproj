@@ -66,9 +66,9 @@
 		E41064B128A542D100BCDBD6 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E4040D5428BF95490084D7B6 /* CustomBackBarButton.swift */,
 				E41064B228A542E400BCDBD6 /* CardViewFactory.swift */,
 				E4040D5228BF627B0084D7B6 /* Storage.swift */,
-				E4040D5428BF95490084D7B6 /* CustomBackBarButton.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -137,8 +137,8 @@
 		E4F7A21928A4050300CC0D7B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E4F7A21A28A4053100CC0D7B /* BoardGameController.swift */,
 				E4B9CAAD28B8F71E00E28C8B /* StartScreenController.swift */,
+				E4F7A21A28A4053100CC0D7B /* BoardGameController.swift */,
 				E482C18328BA165C0066E1F0 /* EditScreenController.swift */,
 				E4B39CF828BA518100642C9F /* SettingScreenControllers */,
 			);
