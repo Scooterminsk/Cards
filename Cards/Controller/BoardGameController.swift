@@ -222,11 +222,15 @@ class BoardGameController: UIViewController {
         if cardViews.allSatisfy({ ($0 as! FlippableView).isFlipped }) {
             for card in cardViews {
                 (card as! FlippableView).flip()
+                (card as! FlippableView).isFlipped = false
+                allCardsFlipped = false
             }
             for card in cardViews{
                 (card as! FlippableView).flipCompletionHandler = { [unowned self] flippedCard in
                     // transfer the card to the top of the hierarchy
-                    flippedCard.superview?.bringSubviewToFront(flippedCard)
+                    if flippedCard.isFlipped {
+                        flippedCard.superview?.bringSubviewToFront(flippedCard)
+                    }
                     
                     // add or delete a card
                     if flippedCard.isFlipped {
@@ -272,6 +276,7 @@ class BoardGameController: UIViewController {
                 continue
             } else {
                 (card as! FlippableView).flip()
+                allCardsFlipped = true
                 (card as! FlippableView).flipCompletionHandler = nil
             }
         }
