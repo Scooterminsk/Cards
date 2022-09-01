@@ -9,8 +9,11 @@ import UIKit
 
 class BoardGameController: UIViewController {
 
-    // user defaults storage
-    var storage: SettingsStorageProtocol!
+    // user defaults settings storage
+    var settingsStorage: SettingsStorageProtocol!
+    
+    // user defaults game storage
+    var gameStorage: GameStorage!
     
     // unique card pairs count
     var cardsPairsCounts = 8
@@ -88,11 +91,13 @@ class BoardGameController: UIViewController {
         
         scoreLabel.text = "Осталось пар карт: 0"
         
-        storage = SettingsStorage()
+        settingsStorage = SettingsStorage()
         loadCardsCount()
         loadCardTypes()
         loadCardColors()
         loadBackShapes()
+        
+        gameStorage = GameStorage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,19 +107,19 @@ class BoardGameController: UIViewController {
     
     // MARK: - Loading data from User Defaults storage
     private func loadCardsCount() {
-        cardsPairsCounts = storage.loadCardPairsCount()
+        cardsPairsCounts = settingsStorage.loadCardPairsCount()
     }
     
     private func loadCardTypes() {
-        availableCardTypes = storage.loadCardTypes()
+        availableCardTypes = settingsStorage.loadCardTypes()
     }
     
     private func loadCardColors() {
-        availableCardColors = storage.loadCardColors()
+        availableCardColors = settingsStorage.loadCardColors()
     }
     
     private func loadBackShapes() {
-        backShapes = storage.loadBackShapes()
+        backShapes = settingsStorage.loadBackShapes()
     }
     
     // MARK: - Score label
@@ -483,6 +488,7 @@ class BoardGameController: UIViewController {
                         
                             self.scoreLabel.text = "Осталось пар карт: \(self.flipsCount)"
                             self.flippedCards = []
+                            self.gameStorage.saveCardViews(views: cardsViews)
                         }
                     } else {
                         // flip the cards back
@@ -512,6 +518,7 @@ class BoardGameController: UIViewController {
             // place the card on the playing field
             boardGameView.addSubview(card)
         }
+        gameStorage.saveCardViews(views: cardViews)
     }
 
 }
