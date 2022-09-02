@@ -9,6 +9,9 @@ import UIKit
 
 class StartScreenController: UIViewController {
    
+    // user defaults game storage
+    var gameStorage: GameStorage!
+    
     // an image
     lazy var image = getImage()
     
@@ -40,6 +43,8 @@ class StartScreenController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        gameStorage = GameStorage()
+        continueGameButton.isHidden = true
     }
     
     // MARK: - Creating an image view to insert a picture on the screen
@@ -133,6 +138,10 @@ class StartScreenController: UIViewController {
     }
     
     @objc func continueGame(_ sender: UIButton) {
-        
+        self.navigationController?.pushViewController(boardGameController, animated: true)
+        self.navigationController?.viewControllers.forEach({ viewController in
+            (viewController as! BoardGameController).cardViews = gameStorage.loadCardViews()
+            (viewController as! BoardGameController).continueGame((viewController as! BoardGameController).cardViews)
+        })
     }
 }
