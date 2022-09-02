@@ -25,13 +25,15 @@ class GameStorage: GameProgressStorageProtocol {
     
     func loadCardViews() -> [UIView] {
         let emptyArr = [UIView]()
-        if let result = storage.array(forKey: storageKey) {
-            return result as! [UIView]
+        if let resultData = storage.object(forKey: storageKey) as? Data,
+           let result = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClasses: [UIView.self as AnyClass], from: resultData) as? [UIView] {
+            return result
         }
         return emptyArr
     }
     
     func saveCardViews(views: [UIView]) {
-        storage.set(views, forKey: storageKey)
+        let archivedViews = try? NSKeyedArchiver.archivedData(withRootObject: views, requiringSecureCoding: false)
+        storage.set(archivedViews, forKey: storageKey)
     }
 }

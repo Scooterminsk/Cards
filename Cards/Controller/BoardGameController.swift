@@ -488,7 +488,6 @@ class BoardGameController: UIViewController {
                         
                             self.scoreLabel.text = "Осталось пар карт: \(self.flipsCount)"
                             self.flippedCards = []
-                            self.gameStorage.saveCardViews(views: cardsViews)
                         }
                     } else {
                         // flip the cards back
@@ -521,4 +520,15 @@ class BoardGameController: UIViewController {
         gameStorage.saveCardViews(views: cardViews)
     }
 
+    // MARK: - Function for placing cards on board to continue game
+    func continueGame(_ cards: [UIView]) {
+        
+        cardsPairsCounts = cardViews.count
+        flipsCount = cardsPairsCounts
+        scoreLabel.text = "Осталось пар карт: \(self.cardsPairsCounts)"
+        
+        for card in cardViews {
+            boardGameView.addSubview(card)
+        }
+    }
 }
