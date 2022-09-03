@@ -11,7 +11,7 @@ import UIKit
 protocol GameProgressStorageProtocol {
     // loading and saving current card views
     func loadCardViews() -> [UIView]
-    func saveCardViews(views: [UIView])
+    func saveCardViews(progress: GameProgress)
     
 }
 
@@ -21,19 +21,48 @@ class GameStorage: GameProgressStorageProtocol {
     private var storage = UserDefaults.standard
     
     // storage key
-    private var storageKey = "views"
+    private var storageKey = "cardViews"
     
     func loadCardViews() -> [UIView] {
         let emptyArr = [UIView]()
-        if let resultData = storage.object(forKey: storageKey) as? Data,
-           let result = try? NSKeyedUnarchiver.unarchivedArrayOfObjects(ofClasses: [UIView.self as AnyClass], from: resultData) as? [UIView] {
-            return result
+        if let resultData = storage.data(forKey: storageKey),
+           let result = try? NSKeyedUnarchiver.unarchivedObject(ofClass: GameProgress.self, from: resultData) {
+            return result.cardViews
+        } else {
+            return emptyArr
         }
-        return emptyArr
     }
     
-    func saveCardViews(views: [UIView]) {
-        let archivedViews = try? NSKeyedArchiver.archivedData(withRootObject: views, requiringSecureCoding: false)
-        storage.set(archivedViews, forKey: storageKey)
+    func saveCardViews(progress: GameProgress) {
+        let archivedProgress = try? NSKeyedArchiver.archivedData(withRootObject: progress, requiringSecureCoding: false)
+        storage.set(archivedProgress, forKey: storageKey)
     }
 }
+
+class GameProgress: NSObject, NSCoding {
+    
+    // array of playing cards
+    var cardViews = [UIView]() {
+        didSet {
+            print("Количество карт изменилось")
+        }
+    }
+    
+    override init() {
+        super.init()
+    }
+    
+    fileprivate enum UserSettings {
+        static let cardViews = "cardViews"
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(self, forKey: UserSettings.cardViews)
+    }
+    
+    required init?(coder: NSCoder) {
+        coder.decodeObject(forKey: UserSettings.cardViews)
+    }
+    
+}
+
