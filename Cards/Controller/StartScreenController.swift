@@ -47,6 +47,11 @@ class StartScreenController: UIViewController {
         continueGameButton.isHidden = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+       // continueGameButton.isHidden = gameStorage.loadCardViews().isEmpty ? true: false
+    }
+    
     // MARK: - Creating an image view to insert a picture on the screen
     
     private func getImage() -> UIImageView {
@@ -139,9 +144,8 @@ class StartScreenController: UIViewController {
     
     @objc func continueGame(_ sender: UIButton) {
         self.navigationController?.pushViewController(boardGameController, animated: true)
-        self.navigationController?.viewControllers.forEach({ viewController in
-            (viewController as! BoardGameController).cardViews = gameStorage.loadCardViews()
-            (viewController as! BoardGameController).continueGame((viewController as! BoardGameController).cardViews)
-        })
+        print(boardGameController.cardViews.count)
+        boardGameController.cardViews = gameStorage.loadCardViews()
+        boardGameController.continueGame(boardGameController.cardViews)
     }
 }

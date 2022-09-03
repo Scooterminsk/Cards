@@ -15,6 +15,9 @@ class BoardGameController: UIViewController {
     // user defaults game storage
     var gameStorage: GameStorage!
     
+    // game progress saving class
+    var gameProgress: GameProgress!
+    
     // unique card pairs count
     var cardsPairsCounts = 8
     
@@ -98,6 +101,7 @@ class BoardGameController: UIViewController {
         loadBackShapes()
         
         gameStorage = GameStorage()
+        cardViews = gameStorage.loadCardViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -404,6 +408,7 @@ class BoardGameController: UIViewController {
         for card in cardViews {
             card.removeFromSuperview()
         }
+        cardViews = []
         cardViews = cards
         // cards iteration
         for card in cardViews {
@@ -414,13 +419,15 @@ class BoardGameController: UIViewController {
             // place the card on the playing field
             boardGameView.addSubview(card)
         }
-        gameStorage.saveCardViews(views: cardViews)
+        
+        gameProgress = GameProgress()
+        gameStorage.saveCardViews(progress: gameProgress)
     }
 
     // MARK: - Function for placing cards on board to continue game
     func continueGame(_ cards: [UIView]) {
         
-        cardsPairsCounts = cardViews.count
+        cardsPairsCounts = cardViews.count / 2
         flipsCount = cardsPairsCounts
         scoreLabel.text = "Осталось пар карт: \(self.cardsPairsCounts)"
         
