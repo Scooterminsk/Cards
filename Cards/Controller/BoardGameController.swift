@@ -197,13 +197,13 @@ class BoardGameController: UIViewController {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
         flipsCount = cardsPairsCounts
+        scoreLabel.text = "Осталось пар карт: \(cardsPairsCounts)"
         game.generateCards()
         return game
     }
     @objc func startGame(_ sender: UIButton) {
         flippedCards = []
         game = getNewGame()
-        scoreLabel.text = "Осталось пар карт: \(cardsPairsCounts)"
         let cards = getCardsBy(modelData: game.cards)
         placeCardsOnBoard(cards)
     }
@@ -250,7 +250,7 @@ class BoardGameController: UIViewController {
                 (card as! FlippableView).isFlipped = false
                 allCardsFlipped = false
             }
-            addCompletionHandler(views: &cardViews)
+            addCompletionHandlerWithAlert(views: &cardViews)
             return
         }
         
