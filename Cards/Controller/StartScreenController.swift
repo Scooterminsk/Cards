@@ -144,8 +144,5 @@ class StartScreenController: UIViewController {
     
     @objc func continueGame(_ sender: UIButton) {
         self.navigationController?.pushViewController(boardGameController, animated: true)
-        print(boardGameController.cardViews.count)
-        boardGameController.cardViews = gameStorage.loadCardViews()
-        boardGameController.continueGame(boardGameController.cardViews)
     }
 }
