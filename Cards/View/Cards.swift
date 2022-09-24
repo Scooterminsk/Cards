@@ -147,7 +147,7 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     
     // MARK: - Touches
     // anchor point
-    private var anchorPoint: CGPoint = CGPoint(x: 0, y: 0)
+    var currentAnchorPoint: CGPoint = CGPoint(x: 0, y: 0)
     
     private var startTouchPoint: CGPoint!
     
@@ -156,15 +156,15 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // anchor point coordinates changing
-        anchorPoint.x = touches.first!.location(in: window).x - frame.minX
-        anchorPoint.y = touches.first!.location(in: window).y - frame.minY
+        currentAnchorPoint.x = touches.first!.location(in: window).x - frame.minX
+        currentAnchorPoint.y = touches.first!.location(in: window).y - frame.minY
         
         // original coordinates saving
         startTouchPoint = frame.origin
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.frame.origin.x = touches.first!.location(in: window).x - anchorPoint.x
-        self.frame.origin.y = touches.first!.location(in: window).y - anchorPoint.y
+        self.frame.origin.x = touches.first!.location(in: window).x - currentAnchorPoint.x
+        self.frame.origin.y = touches.first!.location(in: window).y - currentAnchorPoint.y
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if self.frame.origin == startTouchPoint && allCardsFlipped == false {

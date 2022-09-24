@@ -107,6 +107,22 @@ class BoardGameController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        self.scoreLabel.text = "Осталось пар карт: \(flipsCount)"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent && flipsCount > 0 {
+            self.navigationController?.viewControllers.forEach({ viewController in
+                (viewController as? StartScreenController)?.continueGameButton.isHidden = false
+            })
+        } else if self.isMovingFromParent && flipsCount == 0 {
+            self.navigationController?.viewControllers.forEach({ viewController in
+                (viewController as? StartScreenController)?.continueGameButton.isHidden = true
+            })
+        }
     }
     
     // MARK: - Loading data from User Defaults storage
@@ -181,7 +197,7 @@ class BoardGameController: UIViewController {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
         flipsCount = cardsPairsCounts
-        scoreLabel.text = "Осталось пар карт: \(self.cardsPairsCounts)"
+        scoreLabel.text = "Осталось пар карт: \(cardsPairsCounts)"
         game.generateCards()
         return game
     }
@@ -234,7 +250,7 @@ class BoardGameController: UIViewController {
                 (card as! FlippableView).isFlipped = false
                 allCardsFlipped = false
             }
-            addCompletionHandler(views: &cardViews)
+            addCompletionHandlerWithAlert(views: &cardViews)
             return
         }
         
