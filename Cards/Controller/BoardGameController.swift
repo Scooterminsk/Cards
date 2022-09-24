@@ -109,6 +109,20 @@ class BoardGameController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent && flipsCount > 0 {
+            self.navigationController?.viewControllers.forEach({ viewController in
+                (viewController as? StartScreenController)?.continueGameButton.isHidden = false
+            })
+        } else if self.isMovingFromParent && flipsCount == 0 {
+            self.navigationController?.viewControllers.forEach({ viewController in
+                (viewController as? StartScreenController)?.continueGameButton.isHidden = true
+            })
+        }
+    }
+    
     // MARK: - Loading data from User Defaults storage
     private func loadCardsCount() {
         cardsPairsCounts = settingsStorage.loadCardPairsCount()
