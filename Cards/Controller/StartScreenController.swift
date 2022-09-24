@@ -89,6 +89,16 @@ class StartScreenController: UIViewController {
     
     @objc func toTheGame(_ sender: UIButton) {
         self.navigationController?.pushViewController(boardGameController, animated: true)
+        self.navigationController?.viewControllers.forEach({ viewController in
+            if let viewController = (viewController as? BoardGameController) {
+                for card in viewController.cardViews {
+                    card.removeFromSuperview()
+                }
+                viewController.cardViews = []
+                viewController.flipsCount = 0
+               // viewController.scoreLabel.text = "Осталось пар карт: 0"
+            }
+        })
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     

@@ -107,6 +107,8 @@ class BoardGameController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        self.scoreLabel.text = "Осталось пар карт: \(flipsCount)"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -195,13 +197,13 @@ class BoardGameController: UIViewController {
         let game = Game()
         game.cardsCount = self.cardsPairsCounts
         flipsCount = cardsPairsCounts
-        scoreLabel.text = "Осталось пар карт: \(self.cardsPairsCounts)"
         game.generateCards()
         return game
     }
     @objc func startGame(_ sender: UIButton) {
         flippedCards = []
         game = getNewGame()
+        scoreLabel.text = "Осталось пар карт: \(cardsPairsCounts)"
         let cards = getCardsBy(modelData: game.cards)
         placeCardsOnBoard(cards)
     }
